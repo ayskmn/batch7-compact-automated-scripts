@@ -16,6 +16,14 @@ jobs:
           command: |
             echo 'export PATH=$PATH:~/chromedriver' >> $BASH_ENV
       - run:
+          name: Download Selenium Server
+          command: |
+            wget https://selenium-release.storage.googleapis.com/3.141/selenium-server-standalone-3.141.59.jar
+      - run:
+          name: Start Selenium Server
+          command: |
+            nohup java -jar selenium-server-standalone-3.141.59.jar &
+      - run:
           name: Install Maven
           command: |
             sudo apt-get update && sudo apt-get install -y maven
