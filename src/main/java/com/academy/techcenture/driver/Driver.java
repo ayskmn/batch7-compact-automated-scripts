@@ -7,8 +7,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -31,12 +29,6 @@ public class Driver {
 
         if (browser.equalsIgnoreCase("chrome")) {
             WebDriverManager.chromedriver().setup();
-
-            DesiredCapabilities capabilities = new DesiredCapabilities();
-            capabilities.setCapability("browserName", "chrome");
-            capabilities.setCapability("headless","true");
-
-
             ChromeOptions options = new ChromeOptions();
             Map<String, Object> prefs = new HashMap<String, Object>();
             prefs.put("autofill.profile_enabled", false);
@@ -45,9 +37,7 @@ public class Driver {
             options.setExperimentalOption("prefs", prefs);
             options.addArguments("--headless");
             options.setHeadless(headless);
-        //    driver = new ChromeDriver(options);
-
-            driver = new RemoteWebDriver(capabilities);
+            driver = new ChromeDriver(options);
         } else if (browser.equalsIgnoreCase("firefox")) {
             WebDriverManager.firefoxdriver().setup();
             driver = new FirefoxDriver();
@@ -57,8 +47,8 @@ public class Driver {
         }else{
             throw new RuntimeException("NO DRIVER FOUND");
         }
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTime));
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWait));
+//        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTime));
+//        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWait));
         driver.manage().window().maximize();
         return driver;
     }
