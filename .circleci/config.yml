@@ -53,8 +53,12 @@ jobs:
             sudo apt-get -y install xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable
             sudo apt-get install xvfb
             sudo apt-get -y install imagemagick x11-apps
+      - run: mkdir test-reports
       - run:
-          name: Running X virtual framebuffer
+           name: Download Selenium
+           command: curl -O http://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar
+      - run:
+          name: Start Selenium
           command: | 
             sudo wget https://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar
             sudo java -jar selenium-server-standalone-2.44.0.jar:
