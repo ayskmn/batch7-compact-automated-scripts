@@ -55,16 +55,10 @@ jobs:
             sudo apt-get -y install imagemagick x11-apps
       - run:
           name: Running X virtual framebuffer
-          command: Xvfb :0 -ac &
-
-      - run:
-          name: Run Tests
-          command: |
-            export DISPLAY=:99
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
+          command: | 
+            sudo wget https://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar
+            sudo java -jar selenium-server-standalone-2.44.0.jar:
+          background: true
 
       # run tests!
       - run: mvn test
