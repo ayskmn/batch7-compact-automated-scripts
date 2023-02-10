@@ -22,6 +22,7 @@ public class Driver {
      */
     public static WebDriver getDriver(){
         String browser = ConfigReader.getProperty("browser");
+        boolean headless = Boolean.parseBoolean(ConfigReader.getProperty("headless"));
 
         int pageLoadTime = Integer.parseInt(ConfigReader.getProperty("pageLoadTime"));
         int implicitWait = Integer.parseInt(ConfigReader.getProperty("implicitWait"));
@@ -34,6 +35,8 @@ public class Driver {
             prefs.put("profile.password_manager_enabled", false);
             prefs.put("profile.default_content_setting_values.notifications", 2);
             options.setExperimentalOption("prefs", prefs);
+            options.addArguments("--headless");
+            options.setHeadless(headless);
             driver = new ChromeDriver(options);
         } else if (browser.equalsIgnoreCase("firefox")) {
             WebDriverManager.firefoxdriver().setup();

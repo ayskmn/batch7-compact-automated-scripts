@@ -36,8 +36,7 @@ public abstract class BaseTest {
 
     @BeforeMethod
     public void setUp(){
-     //   driver = Driver.getDriver();
-        driver = new ChromeDriver();
+        driver = Driver.getDriver();
     }
 
     @AfterMethod
