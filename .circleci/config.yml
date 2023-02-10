@@ -7,29 +7,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Download ChromeDriver
-          command: |
-            wget https://chromedriver.storage.googleapis.com/78.0.3904.70/chromedriver_linux64.zip
-            unzip chromedriver_linux64.zip
-      - run:
-          name: Set up environment variables
-          command: |
-            echo 'export PATH=$PATH:~/chromedriver' >> $BASH_ENV
-      - run:
-          name: Download Selenium Server
-          command: |
-            wget https://selenium-release.storage.googleapis.com/3.141/selenium-server-standalone-3.141.59.jar
-      - run:
           name: Start Selenium Server
-          command: |
-            nohup java -jar selenium-server-standalone-3.141.59.jar -Dwebdriver.chrome.driver=./chromedriver &
-      - run:
-          name: Install Maven
-          command: |
-            sudo apt-get update && sudo apt-get install -y maven
+          run: java -jar selenium-server-4.8.0.jar hub
       - run:
           name: Run tests with Maven
-          command: |
-            mvn test
+          command: mvn clean test
       - store_test_results:
           path: ~/project/target/surefire-reports
