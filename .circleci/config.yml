@@ -1,30 +1,58 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
-version: 2.1
+version: 2
+
 jobs:
-  build-and-test:
+  build:
     docker:
-      - image: cimg/openjdk:11.0
-      - image: cimg/node:16.13.1-browsers
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+      # specify the version you desire here
+      - image: circleci/openjdk:11-jdk
+    working_directory: ~/circleCI_Selenium_Demo
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
     steps:
       - checkout
-      - run: mkdir test-reports
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: mvn dependency:go-offline
       - run:
-          name: Download Selenium
-          command: curl -O http://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar
+          name: Install latest version of ChromeDriver Sample
+          command: |
+            sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+            sudo sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+            sudo apt-get update
+            sudo apt-get install google-chrome-unstable
       - run:
-          name: Start Selenium
-          command: java -jar selenium-server-standalone-3.5.3.jar -log test-reports/selenium.log
+          name: Install latest version of ChromeDriver Sample
+          command: |
+            sudo wget https://chromedriver.storage.googleapis.com/2.31/chromedriver_linux64.zip
+            sudo unzip -o chromedriver_linux64.zip
+            sudo rm chromedriver_linux64.zip
+            sudo mv chromedriver /usr/bin/
+            sudo chmod 777 /usr/bin/chromedriver
+            sudo apt-get install libxi6 libgconf-2-4
+            sudo apt-get -y install xvfb gtk2-engines-pixbuf
+            sudo apt-get -y install xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable
+            sudo apt-get install xvfb
+            sudo apt-get -y install imagemagick x11-apps
       - run:
-          name: Build
-          command: mvn clean test
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
-workflows:
-  sample: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
-    jobs:
-      - build-and-test
+          name: Running X virtual framebuffer
+          command: Xvfb :0 -ac &
+      - run:
+          name: Run Tests
+          command: |
+            export DISPLAY=:99
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+      # run tests!
+      - run: mvn clean test
+      - store_artifacts:
+          path: target/surefire-reports
+          destination: tr1
+      - store_test_results:
+          path: target/surefire-reports
