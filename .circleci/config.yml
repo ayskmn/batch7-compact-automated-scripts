@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Start Selenium Server
-          run: java -jar selenium-server-4.8.0.jar hub
+          command: java -jar selenium-server-4.8.0.jar hub
       - run:
           name: Run tests with Maven
           command: mvn clean test
