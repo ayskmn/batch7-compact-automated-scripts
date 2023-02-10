@@ -1,24 +1,34 @@
-version: 2.1
-orbs:
-  browser-tools: circleci/browser-tools@1.4.0
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
 jobs:
   build:
     docker:
+      # specify the version you desire here
+      - image: circleci/node:7.10-browsers
       - image: circleci/openjdk:11-jdk
-      - image: selenium/standalone-chrome:3.11.0
-      - image: cimg/node:19.3.0-browsers
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
     steps:
-      - run:
-          name: something
-          command: |
-            # Install Chrome driver
-            - curl http://chromedriver.storage.googleapis.com/2.23/chromedriver_linux64.zip | gzip -dc > chromedriver
-            - chmod +x chromedriver
-            # Install Selenium
-            - curl http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.1.jar > selenium-server-standalone.jar
-            - java -jar selenium-server-standalone.jar -trustAllSSLCertificates -Dwebdriver.chrome.driver=chromedriver
-          background: true
       - checkout
+
+      # Download and cache dependencies
       - run:
-          name: Run Tests
-          command: mvn test
+          name: Download Selenium
+          command: curl -O http://selenium-release.storage.googleapis.com/3.5/selenium-server-standalone-3.5.3.jar
+
+      - run:
+          name: Start Selenium
+          command: java -jar selenium-server-standalone-3.5.3.jar
+          background: true
+
+      # run tests!
+      - run: mvn test
