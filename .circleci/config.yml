@@ -38,7 +38,7 @@ jobs:
            command: curl -O http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.jar
       - run:
           name: Start Selenium
-          command: java -jar selenium-server-standalone-2.4.4.jar -log test-reports/selenium.log
+          command: java -jar selenium-server-standalone-2.44.jar -log test-reports/selenium.log
           background: true
 
       # run tests!
