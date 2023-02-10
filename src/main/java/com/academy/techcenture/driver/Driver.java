@@ -51,8 +51,8 @@ public class Driver {
         }else{
             throw new RuntimeException("NO DRIVER FOUND");
         }
-//        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTime));
-//        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWait));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTime));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWait));
         driver.manage().window().maximize();
         return driver;
     }
