@@ -7,7 +7,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +24,7 @@ public class Driver {
      * This method will return a webdriver object from the WebDriver interface
      * @return instance of Chrome, Firefox, IE, or EDGE
      */
-    public static WebDriver getDriver(){
+    public static WebDriver getDriver() throws MalformedURLException {
         String browser = ConfigReader.getProperty("browser");
         boolean headless = Boolean.parseBoolean(ConfigReader.getProperty("headless"));
 
@@ -29,19 +33,26 @@ public class Driver {
 
         if (browser.equalsIgnoreCase("chrome")) {
             WebDriverManager.chromedriver().setup();
-            ChromeOptions options = new ChromeOptions();
-            Map<String, Object> prefs = new HashMap<String, Object>();
-            prefs.put("autofill.profile_enabled", false);
-            prefs.put("profile.password_manager_enabled", false);
-            prefs.put("profile.default_content_setting_values.notifications", 2);
-            options.setExperimentalOption("prefs", prefs);
-            options.addArguments("--headless");
-            options.addArguments("--window-size=1920,1080");
-            options.addArguments("--start-maximized");
+
+//            ChromeOptions options = new ChromeOptions();
+//            Map<String, Object> prefs = new HashMap<String, Object>();
+//            prefs.put("autofill.profile_enabled", false);
+//            prefs.put("profile.password_manager_enabled", false);
+//            prefs.put("profile.default_content_setting_values.notifications", 2);
+//            options.setExperimentalOption("prefs", prefs);
 //            options.addArguments("--headless");
-            options.addArguments("--disable-gpu");
-            options.setHeadless(headless);
-            driver = new ChromeDriver(options);
+//            options.addArguments("--window-size=1920,1080");
+//            options.addArguments("--start-maximized");
+//            options.addArguments("--headless");
+//            options.addArguments("--disable-gpu");
+//            options.setHeadless(headless);
+//            driver = new ChromeDriver(options);
+
+            DesiredCapabilities capabilities = new DesiredCapabilities();
+            capabilities.setCapability("browserName", "chrome");
+
+            driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), capabilities);
+
         } else if (browser.equalsIgnoreCase("firefox")) {
             WebDriverManager.firefoxdriver().setup();
             driver = new FirefoxDriver();

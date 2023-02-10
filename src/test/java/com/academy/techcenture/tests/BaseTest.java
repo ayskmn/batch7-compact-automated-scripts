@@ -16,6 +16,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -35,7 +36,7 @@ public abstract class BaseTest {
     }
 
     @BeforeMethod
-    public void setUp(){
+    public void setUp() throws MalformedURLException {
         driver = Driver.getDriver();
     }
 
