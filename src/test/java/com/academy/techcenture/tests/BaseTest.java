@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
@@ -35,7 +36,8 @@ public abstract class BaseTest {
 
     @BeforeMethod
     public void setUp(){
-        driver = Driver.getDriver();
+     //   driver = Driver.getDriver();
+        driver = new ChromeDriver();
     }
 
     @AfterMethod
