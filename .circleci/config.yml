@@ -12,5 +12,3 @@ jobs:
       - run:
           name: Run tests with Maven
           command: mvn clean test
-      - store_test_results:
-          path: ~/project/target/surefire-reports
