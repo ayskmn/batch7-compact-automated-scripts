@@ -22,7 +22,7 @@ jobs:
       - run:
           name: Start Selenium Server
           command: |
-            nohup java -jar selenium-server-standalone-3.141.59.jar &
+            nohup java -jar selenium-server-standalone-3.141.59.jar -Dwebdriver.chrome.driver=./chromedriver &
       - run:
           name: Install Maven
           command: |
