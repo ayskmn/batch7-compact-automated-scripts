@@ -113,10 +113,10 @@ jobs:
 
       - store_artifacts:
 
-          path: target/surefire-reports
+          path: test-output
 
           destination: tr1
 
       - store_test_results:
 
-          path: target/surefire-reports
+          path: test-output
