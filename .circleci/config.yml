@@ -1,14 +1,32 @@
-version: 2.1
+version: 2
+
 jobs:
   build:
-    working_directory: ~/project
     docker:
+      # specify the version you desire here
       - image: circleci/openjdk:11-jdk
+      - image: selenium/standalone-chrome:3.11.0
+
+    working_directory: ~/circleCI_Selenium_Demo
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
     steps:
       - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: mvn dependency:go-offline
       - run:
-          name: Start Selenium Server
-          command: java -jar selenium-server-4.8.0.jar standalone
+          name: create docker network
+          command: docker network create grid
       - run:
-          name: Run tests with Maven
-          command: mvn clean test
+          name: install selenium-hub
+          command: docker run -d --rm -p 4444:4444 --net grid --name selenium-hub selenium/hub:3.11.0
+      - run:
+          name: install selenium node
+          command: docker run -d --rm --net grid -e HUB_HOST=selenium-hub -v /dev/shm:/dev/shm selenium/node-chrome:3.11.0
+      - run: mvn clean test
