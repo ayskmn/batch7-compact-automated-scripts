@@ -20,9 +20,9 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
       - run: mvn dependency:go-offline
-      - run:
-          name: create docker network
-          command: docker network create grid
+#      - run:
+#          name: create docker network
+#          command: docker network create grid
       - run:
           name: install selenium-hub
           command: docker run -d --rm -p 4444:4444 --net grid --name selenium-hub selenium/hub:3.11.0
