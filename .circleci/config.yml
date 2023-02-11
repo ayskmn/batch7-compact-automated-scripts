@@ -51,7 +51,7 @@ jobs:
 
             sudo apt-get update
 
-            sudo apt-get install google-chrome-unstable
+            sudo apt-get install google-chrome-stable
 
 
       - run:
