@@ -43,16 +43,9 @@ public class Driver {
             options.addArguments("--headless");
             options.addArguments("--window-size=1920,1080");
             options.addArguments("--start-maximized");
-            options.addArguments("--headless");
             options.addArguments("--disable-gpu");
             options.setHeadless(headless);
             driver = new ChromeDriver(options);
-
-//            DesiredCapabilities capabilities = new DesiredCapabilities();
-//            capabilities.setCapability("browserName", "chrome");
-
-         //   driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), capabilities);
-
         } else if (browser.equalsIgnoreCase("firefox")) {
             WebDriverManager.firefoxdriver().setup();
             driver = new FirefoxDriver();

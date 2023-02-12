@@ -8,7 +8,6 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
@@ -22,7 +21,6 @@ import java.util.Date;
 
 public abstract class BaseTest {
     protected static WebDriver driver;
-
     protected ExtentReports reports;
     protected ExtentTest extentTest;
 
@@ -42,7 +40,6 @@ public abstract class BaseTest {
 
     @AfterMethod
     public void tearDown(ITestResult result) throws IOException {
-
         if(result.getStatus()== ITestResult.FAILURE){
             extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS "+result.getName());
             extentTest.log(LogStatus.FAIL, "TEST CASE FAILED IS "+result.getThrowable());
@@ -71,8 +68,7 @@ public abstract class BaseTest {
         String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
         TakesScreenshot ts = (TakesScreenshot) driver;
         File source = ts.getScreenshotAs(OutputType.FILE);
-        String destination =  System.getProperty("user.dir") + "/test-output/" + screenshotName + dateName
-                + ".png";
+        String destination =  System.getProperty("user.dir") + "/test-output/" + screenshotName + dateName + ".png";
         File finalDestination = new File(destination);
         FileUtils.copyFile(source, finalDestination);
         return destination;
